@@ -1,0 +1,7 @@
+.spinner {
+    position: absolute;
+    width: 25px;
+    height: 150px;
+    border-radius: 50px;
+    transform-origin: 50% 50%;
+}
