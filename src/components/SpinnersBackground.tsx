@@ -5,6 +5,8 @@ import { bindActionCreators } from 'redux';
 import {fetchWeatherDataSuccess, fetchWeatherDataError, fetchWeatherDataPending} from '../redux/reducers/weatherReducer';
 import fetchWeatherDataAction from '../redux/actions/fetchWeatherData';
 import weatherMapper from '../utils/weatherDataMapper';
+import posed from 'react-pose';
+import '../styles/SpinnersBackground.css';
 
 export interface OwnProps {
     spinnerCount: number,
@@ -19,10 +21,62 @@ interface DispatchProps {
 
 type Props = DispatchProps & OwnProps;
 
+const FlashBackground = posed.div({
+    flash: {
+        backgroundColor: isDay() ? '#000000' : '#ffffff',
+        transition: { 
+            default: { ease: 'anticipate'}
+        }
+    },
+    noflash: {
+        backgroundColor: isDay() ? '#ffffff' : '#000000',
+        transition: { 
+            default: { ease: 'anticipate'}
+        }
+    }
+});
+
+function sleep (time:number) {
+    return new Promise((resolve) => setTimeout(resolve, time));
+}
+
+function isDay() {
+    const hours = (new Date()).getHours();
+    return (hours >= 6 && hours < 18);
+}
+
 class SpinnersBackground extends React.Component<Props>{
+
+    state = { isFlashing: false };
+
     componentDidMount() {
         this.props.fetchWeatherData();
+        setInterval(() => { 
+            if(typeof this.props.weatherData !== 'undefined' && this.props.weatherData.length !== 0){
+                const weatherTypeID = this.props.weatherData.weather[0].ID;
+                if(weatherMapper.isLightningWeather(weatherTypeID)){
+                    this.setState({ isFlashing: true });
+                    sleep(500).then(() => {
+                        this.setState({ isFlashing: false });
+                    });
+                }
+            }
+        }, 10000);
     }
+
+    createSpinners = () => {
+        const windSpeed = this.props.weatherData.wind.speed;
+        const weatherTypeID = this.props.weatherData.weather[0].ID;
+        var animDurForWindSpeed = weatherMapper.getDurationForWindSpeed(windSpeed);
+        var rotationForWindSpeed = weatherMapper.getRotationForWindSpeed(windSpeed);
+        var isRaining = weatherMapper.isRaining(weatherTypeID);
+        const spinners = [];
+        for (let i = 0; i < this.props.spinnerCount; i++) {
+            spinners.push(<Spinner key={i} shouldFall={isRaining} animationDuration={animDurForWindSpeed} rotationAmount={rotationForWindSpeed}/>);
+        }
+        return spinners;
+    }
+
     render() {
         if(this.props.pending === true){
             return <>Loading...</>;
@@ -32,22 +86,13 @@ class SpinnersBackground extends React.Component<Props>{
             return <>Loading...</>
         }
 
-        const windSpeed = this.props.weatherData.wind.speed;
-        const weatherTypeID = this.props.weatherData.weather[0].ID;
-        var animDurForWindSpeed = weatherMapper.getDurationForWindSpeed(windSpeed);
-        var rotationForWindSpeed = weatherMapper.getRotationForWindSpeed(windSpeed);
-        /* IDs determined by OpenWeatherMap, 500 - 531 are different stages of rain. Not currently concered with intensity */
-        var isRaining = (weatherTypeID >= 500 && weatherTypeID <= 531) ? true : false;
-
-        const spinners = [];
-        for (let i = 0; i < this.props.spinnerCount; i++) {
-            spinners.push(<Spinner key={i} shouldFall={isRaining} animationDuration={animDurForWindSpeed} rotationAmount={rotationForWindSpeed}/>);
-        }
-        return (
-            spinners.map((value, index) => {
-                return value;
-            })
+        return ( 
+            <>
+            <FlashBackground className="flashBG" pose={this.state.isFlashing ? 'flash' : 'noflash'}/>
+            {this.createSpinners()}
+            </>
         );
+        
     }
 }
 

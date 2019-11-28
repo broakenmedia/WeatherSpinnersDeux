@@ -44,7 +44,7 @@ function getRandomStartPositionPx(){
     return Math.random() * (max - min) + min;
 }
 
-class Spinner extends React.Component<SpinnerProps>{
+class Spinner extends React.PureComponent<SpinnerProps>{
     
     animationDuration = featherNumber(this.props.animationDuration);
     

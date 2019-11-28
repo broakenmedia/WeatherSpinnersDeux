@@ -15,5 +15,15 @@ export default {
         var windSpeedLowerBound = 1;
         var windSpeedUpperBound = 10;
         return ((windSpeed - windSpeedLowerBound) / (windSpeedUpperBound - windSpeedLowerBound) * (degreesUpperBound - degreesLowerBound) + degreesLowerBound);
+    },
+
+    isLightningWeather(weatherID :number){
+        /* IDs determined by OpenWeatherMap, 200 - 232 are different stages of thunderstorm. Not currently concered with intensity */
+        return (weatherID >= 200 && weatherID <= 232) ? true : false;
+    },
+
+    isRaining(weatherID :number){
+        /* IDs determined by OpenWeatherMap, 500 - 531 are different stages of rain. Not currently concered with intensity */
+        return (weatherID >= 500 && weatherID <= 531) ? true : false;
     }
 }
