@@ -31,14 +31,17 @@ class SpinnersBackground extends React.Component<Props>{
         }else if(typeof this.props.weatherData === 'undefined' || this.props.weatherData.length === 0){
             return <>Loading...</>
         }
-        
+
         const windSpeed = this.props.weatherData.wind.speed;
+        const weatherTypeID = this.props.weatherData.weather[0].ID;
         var animDurForWindSpeed = weatherMapper.getDurationForWindSpeed(windSpeed);
         var rotationForWindSpeed = weatherMapper.getRotationForWindSpeed(windSpeed);
+        /* IDs determined by OpenWeatherMap, 500 - 531 are different stages of rain. Not currently concered with intensity */
+        var isRaining = (weatherTypeID >= 500 && weatherTypeID <= 531) ? true : false;
 
         const spinners = [];
         for (let i = 0; i < this.props.spinnerCount; i++) {
-            spinners.push(<Spinner key={i} animationDuration={animDurForWindSpeed} rotationAmount={rotationForWindSpeed}/>);
+            spinners.push(<Spinner key={i} shouldFall={isRaining} animationDuration={animDurForWindSpeed} rotationAmount={rotationForWindSpeed}/>);
         }
         return (
             spinners.map((value, index) => {

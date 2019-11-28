@@ -23,7 +23,7 @@ function fetchWeatherDataError(error:string) {
 function fetchWeatherData() {
     return (dispatch: { (arg0: { type: string; }): void; (arg0: { type: string; weatherData: string; }): void; (arg0: { type: string; error: string; }): void; }) => {
         dispatch(fetchWeatherDataPending());
-        fetch('http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=' + process.env.REACT_APP_OPEN_WEATHER_API_KEY)
+        fetch('http://api.openweathermap.org/data/2.5/weather?q=Oxford,uk&APPID=' + process.env.REACT_APP_OPEN_WEATHER_API_KEY)
         .then(res => {
             return res.json()
         })

@@ -6,6 +6,7 @@ interface SpinnerProps {
     animationDuration: number,
     /* rotationAmount: Radial number, factors of 360 aka, 1 full rotation. 720 being 2 full rotations over anim duration. */
     rotationAmount: number,
+    shouldFall: boolean
 }
 
 function featherNumber(val:number):number {
@@ -49,10 +50,12 @@ class Spinner extends React.Component<SpinnerProps>{
     
     SpinnerShape = posed.div({
         left: { 
-            x: '-100px', 
+            x: '-100px',
+            y: (this.props.shouldFall ? '100vh' : 0),
             rotate:this.props.rotationAmount, 
             opacity:0,
             transition: { 
+                y: {duration: this.animationDuration, ease: [.49, .12, .67, .1]},
                 /* Cubic bezier ease - Limits fade out opacity change till the very last 500 millis */
                 opacity: { ease: [.49, .12, .67, .1], duration: this.animationDuration - 300 },
                 default: { duration: this.animationDuration, ease:'linear' }
@@ -60,6 +63,7 @@ class Spinner extends React.Component<SpinnerProps>{
         },
         right: { 
             x: 'calc(100vw + ' + getRandomStartPositionPx() + 'px)', 
+            y: 0,
             rotate:0, 
             opacity: getRandomOpacityFloat(),
             transition: { duration: 0 } 
