@@ -3,19 +3,27 @@ import { connect } from 'react-redux';
 import {fetchWeatherDataSuccess, fetchWeatherDataError, fetchWeatherDataPending} from '../redux/reducers/weatherReducer';
 import weatherMapper from '../utils/weatherDataMapper';
 import '../styles/ValuesDisplay.css';
+import { bindActionCreators } from "redux";
 
 export interface OwnProps {
     weatherData?: any,
     pending?: boolean,
-    error?: string
+    error?: string,
+    searchParam?: string
 }
 
-class ValuesDisplay extends React.Component<OwnProps>{
+interface DispatchProps {
+    
+}
+
+type Props = DispatchProps & OwnProps;
+
+class ValuesDisplay extends React.Component<Props>{
            
     state = { isShowing: true };
 
     componentDidMount() {
-        this.handleClick = this.handleClick.bind(this);
+       
     }
 
     handleClick(){
@@ -34,12 +42,12 @@ class ValuesDisplay extends React.Component<OwnProps>{
         return (
             <>
             { isShowing ? 
-                <div className="valueDisplay" onClick={this.handleClick}>
-                    {/* <p className="valueDisplayHeader">Values</p> */}
+                <div className="valueDisplay" onClick={this.handleClick.bind(this)}>
+                    <p className="valueDisplayHeader">{this.props.searchParam}</p>
                     <p>Temperature: {weatherMapper.getTemperatureCelcius(this.props.weatherData.main.temp)}°C</p>
                     <p>Wind Speed: {this.props.weatherData.wind.speed}m/s</p>
-                    <p>Has Lightning: {weatherMapper.isLightningWeather(this.props.weatherData.weather.ID) ? 'true' : 'false'}</p>
-                    <p>Is Raining: {weatherMapper.isRaining(this.props.weatherData.weather.ID) ? 'true' : 'false'}</p>
+                    <p>Lightning: {weatherMapper.isLightningWeather(this.props.weatherData.weather.ID) ? 'true' : 'false'}</p>
+                    <p>Raining: {weatherMapper.isRaining(this.props.weatherData.weather.ID) ? 'true' : 'false'}</p>
                 </div>
             : <></>}
             </>
@@ -49,12 +57,18 @@ class ValuesDisplay extends React.Component<OwnProps>{
 
 const mapStateToProps = function(state: any) {
     return {
+        searchParam: state.searchReducer.searchQuery,
         error: fetchWeatherDataError(state.weatherReducer),
         weatherData: fetchWeatherDataSuccess(state.weatherReducer),
         pending: fetchWeatherDataPending(state.weatherReducer)
     }
 }
+
+const mapDispatchToProps = (dispatch: any) => bindActionCreators({
+    
+}, dispatch)
   
 export default connect(
-    mapStateToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(ValuesDisplay);

@@ -11,18 +11,21 @@ export function weatherReducer(state = initialState, action: { type: any; weathe
         case FETCH_WEATHER_DATA_PENDING: 
             return {
                 ...state,
-                pending: true
+                pending: true,
+                error:null
             }
         case FETCH_WEATHER_DATA_SUCCESS:
             return {
                 ...state,
                 pending: false,
-                weatherData: action.weatherData
+                weatherData: action.weatherData,
+                error:null
             }
         case FETCH_WEATHER_DATA_ERROR:
             return {
                 ...state,
                 pending: false,
+                weatherData:[],
                 error: action.error
             }
         default: 

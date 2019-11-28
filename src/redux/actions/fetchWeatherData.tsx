@@ -20,16 +20,17 @@ function fetchWeatherDataError(error:string) {
     }
 }
 
-function fetchWeatherData() {
-    
+function fetchWeatherData(param:string) {
+    console.log(param);
     return (dispatch: { (arg0: { type: string; }): void; (arg0: { type: string; weatherData: string; }): void; (arg0: { type: string; error: string; }): void; }) => {
         dispatch(fetchWeatherDataPending());
-        if(process.env.REACT_APP_USE_DUMMY_DATA){
+        if(process.env.REACT_APP_USE_DUMMY_DATA === 'true'){
             console.log("Using dummy data");
             dispatch(fetchWeatherDataSuccess(JSON.parse(JSON.stringify(dummyWeather))));
             return dummyWeather; 
         }else{
-            fetch('http://api.openweathermap.org/data/2.5/weather?q=Oxford,uk&APPID=' + process.env.REACT_APP_OPEN_WEATHER_API_KEY)
+            console.log("Fetching:" + param);
+            fetch('http://api.openweathermap.org/data/2.5/weather?q=' + param + '&APPID=' + process.env.REACT_APP_OPEN_WEATHER_API_KEY)
             .then(res => {
                 return res.json()
             })
