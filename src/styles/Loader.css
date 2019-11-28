@@ -1,0 +1,5 @@
+.loadingMessage{
+    position: absolute; /* or absolute */
+    top: 50%;
+    left: 50%;
+}

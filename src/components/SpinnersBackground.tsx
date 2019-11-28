@@ -7,6 +7,7 @@ import fetchWeatherDataAction from '../redux/actions/fetchWeatherData';
 import weatherMapper from '../utils/weatherDataMapper';
 import posed from 'react-pose';
 import '../styles/SpinnersBackground.css';
+import Loader from './Loader';
 
 export interface OwnProps {
     spinnerCount: number,
@@ -90,11 +91,11 @@ class SpinnersBackground extends React.Component<Props>{
 
     render() {
         if(this.props.pending === true){
-            return <>Loading...</>;
+            return <Loader/>;
         }else if(this.props.error !== null){
             return <>{this.props.error}</>
         }else if(typeof this.props.weatherData === 'undefined' || this.props.weatherData.length === 0){
-            return <>Loading...</>
+            return <Loader/>;
         }
 
         return ( 
@@ -103,7 +104,6 @@ class SpinnersBackground extends React.Component<Props>{
             {this.createSpinners()}
             </>
         );
-        
     }
 }
 

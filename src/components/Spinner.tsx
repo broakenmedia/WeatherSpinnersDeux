@@ -33,7 +33,7 @@ function getRandomHeightPx() {
 function getRandomOpacityFloat() {
     /* Set random opacity at animation start */
     const max = 1;
-    const min = 0.65;
+    const min = 0.85;
     return Math.random() * (max - min) + min;
 }
 
@@ -84,7 +84,7 @@ class Spinner extends React.PureComponent<SpinnerProps>{
 
     render() {
         const { isRightSide } = this.state;
-        return <this.SpinnerShape onPoseComplete={() => this.onAnimationFinish()} className="spinner" style={{backgroundColor:'red', top: getRandomTopPositionPx() + '%', height: getRandomHeightPx()}} pose={isRightSide ? 'left' : 'right'} />;
+        return <this.SpinnerShape onPoseComplete={() => this.onAnimationFinish()} className="spinner" style={{background:`linear-gradient(to top, #7f7fd5, #86a8e7, #91eae4)`, top: getRandomTopPositionPx() + '%', height: getRandomHeightPx()}} pose={isRightSide ? 'left' : 'right'} />;
     }
 }
 
