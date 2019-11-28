@@ -7,10 +7,22 @@ import store from '../redux/Store';
 import SearchBar from './SearchBar';
 
 class App extends React.Component{
+
+  state = { controlsHidden: false };
+
+  onControlsShown(){
+    this.setState({controlsHidden:false});
+  }
+
+  onControlsHidden(){
+    this.setState({controlsHidden:true});
+  }
+
   render() {
       return (
           <Provider store={store}>
-            <SearchBar/>
+            { this.state.controlsHidden ? <div className="btnShowControls" onClick={this.onControlsShown.bind(this)}>Show Controls</div> : <></>}
+            <SearchBar onCloseControlsClicked={this.onControlsHidden.bind(this)} controlsHidden={this.state.controlsHidden}/>
             <ValuesDisplay/>
             <SpinnersBackground spinnerCount={40}/>
           </Provider>

@@ -1,0 +1,6 @@
+.btnShowControls{
+    display: inline-block;
+    cursor: pointer;
+    margin:10px;
+    border-bottom: 1px solid gray;
+}

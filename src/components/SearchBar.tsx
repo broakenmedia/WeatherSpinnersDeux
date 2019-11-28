@@ -5,7 +5,8 @@ import { setSearchQueryAction } from '../redux/actions/searchActions';
 import { bindActionCreators } from "redux";
 
 export interface OwnProps {
-    
+    onCloseControlsClicked: any,
+    controlsHidden:boolean
 }
 
 interface DispatchProps {
@@ -17,11 +18,15 @@ type Props = DispatchProps & OwnProps;
 class SearchBar extends React.Component<Props>{
            
     state = { 
-        isShowing: true, 
         searchQuery: '', 
         isTyping: false,
         typingTimeout: 0 
     };
+
+    onCloseClicked(){
+        this.setState({isShowing: false});
+        this.props.onCloseControlsClicked();
+    }
 
     componentDidMount() {
         
@@ -42,17 +47,15 @@ class SearchBar extends React.Component<Props>{
                 }
             }, 3000)
         });
-        //this.setState({isShowing: false});
     }
 
     render() {
-        const { isShowing } = this.state;
-        
         return (
             <>
-            { isShowing ? 
+            { !this.props.controlsHidden ? 
                 <div className="searchBoxContainer">
-                    <input type="text" id="searchInput" value={this.state.searchQuery} onChange={this.onTextChanged.bind(this)} placeholder="Enter city and country e.g. (London,uk)"></input>
+                    <img onClick={this.onCloseClicked.bind(this)} id="btnHideSearch" src="/btn_hide.png"/>
+                    <input type="text" id="searchInput" value={this.state.searchQuery} onChange={this.onTextChanged.bind(this)} placeholder="City and country e.g. (London,uk)"></input>
                 </div>
                 : 
                 <></>
