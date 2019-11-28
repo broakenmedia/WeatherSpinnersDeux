@@ -30,5 +30,28 @@ export default {
     getTemperatureCelcius(tempKelvin :number){
         /* Formula required to convert from Kelvin to Celcius */
         return Math.floor(tempKelvin - 273.15);
+    },
+
+    getHSLForTemp(tempKelvin :number){
+        /* Generate HSL color based on temperature, courtesy of Univers */
+        var temp = Math.pow(this.getTemperatureCelcius(tempKelvin), 1.5) || 0;
+        var mina = 210 - temp;
+        if(mina > 225) mina = 225;
+        var variance = 80;
+        var maxa = mina - variance;
+        if(maxa < 0) maxa = 0;
+        var h = mina + (Math.random() * (maxa - mina));
+        var s = 80 + Math.floor(Math.random() * 5);
+        var l = 58 + Math.floor(Math.random() * 5);
+        return 'hsl(' + h + "," + s + "%," + l + "%)";
+    },
+
+    getLinearGradientForTemp(tempKelvin:number){
+        var s = 'linear-gradient(to top';
+        for (let i = 0; i < 2; i++) {
+            s+= ',' + this.getHSLForTemp(tempKelvin);
+        }
+        s+= ')';
+        return s;
     }
 }

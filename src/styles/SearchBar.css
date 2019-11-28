@@ -21,8 +21,14 @@
     background: #fff;
     transition: all 0.3s ease;
     z-index: 10000;
+    color:black;
 }
 
 #searchInput:focus {
     box-shadow: 0 3px 3px rgba(128,128,128, 0.20);
+}
+
+input,
+input::-webkit-input-placeholder {
+    color:rgba(128,128,128, 0.80);
 }

@@ -52,7 +52,7 @@ class SearchBar extends React.Component<Props>{
             <>
             { isShowing ? 
                 <div className="searchBoxContainer">
-                    <input type="text" id="searchInput" value={this.state.searchQuery} onChange={this.onTextChanged.bind(this)}></input>
+                    <input type="text" id="searchInput" value={this.state.searchQuery} onChange={this.onTextChanged.bind(this)} placeholder="Enter city and country e.g. (London,uk)"></input>
                 </div>
                 : 
                 <></>

@@ -1,12 +1,14 @@
 import React from 'react';
 import posed from 'react-pose';
 import '../styles/Spinner.css';
+import weatherDataMapper from '../utils/weatherDataMapper';
 
 interface SpinnerProps {
     animationDuration: number,
     /* rotationAmount: Radial number, factors of 360 aka, 1 full rotation. 720 being 2 full rotations over anim duration. */
     rotationAmount: number,
-    shouldFall: boolean
+    shouldFall: boolean,
+    tempKelvin: number
 }
 
 function featherNumber(val:number):number {
@@ -25,7 +27,7 @@ function getRandomTopPositionPx() {
 
 function getRandomHeightPx() {
     /* Get random height for spinner */
-    const max = 200;
+    const max = 250;
     const min = 100;
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -33,15 +35,15 @@ function getRandomHeightPx() {
 function getRandomOpacityFloat() {
     /* Set random opacity at animation start */
     const max = 1;
-    const min = 0.85;
+    const min = 0.9;
     return Math.random() * (max - min) + min;
 }
 
-function getRandomStartPositionPx(){
+function getRandomDelayMillis(){
     /* Stagger the off-screen starting position of each spinner to prevent clumping */
-    const max = 2000;
-    const min = 60;
-    return Math.random() * (max - min) + min;
+    const max = 20000;
+    const min = 0;
+    return Math.floor(Math.random() * (max - min)) + min;
 }
 
 class Spinner extends React.PureComponent<SpinnerProps>{
@@ -51,6 +53,7 @@ class Spinner extends React.PureComponent<SpinnerProps>{
     SpinnerShape = posed.div({
         left: { 
             x: '-100px',
+            delay: getRandomDelayMillis(),
             y: (this.props.shouldFall ? '100vh' : 0),
             rotate:this.props.rotationAmount, 
             opacity:0,
@@ -62,7 +65,7 @@ class Spinner extends React.PureComponent<SpinnerProps>{
             }
         },
         right: { 
-            x: 'calc(100vw + ' + getRandomStartPositionPx() + 'px)', 
+            x: '100vw', 
             y: 0,
             rotate:0, 
             opacity: getRandomOpacityFloat(),
@@ -84,7 +87,8 @@ class Spinner extends React.PureComponent<SpinnerProps>{
 
     render() {
         const { isRightSide } = this.state;
-        return <this.SpinnerShape onPoseComplete={() => this.onAnimationFinish()} className="spinner" style={{background:`linear-gradient(to top, #7f7fd5, #86a8e7, #91eae4)`, top: getRandomTopPositionPx() + '%', height: getRandomHeightPx()}} pose={isRightSide ? 'left' : 'right'} />;
+        var tempColor = weatherDataMapper.getLinearGradientForTemp(this.props.tempKelvin);
+        return <this.SpinnerShape onPoseComplete={() => this.onAnimationFinish()} className="spinner" style={{background:tempColor, top: getRandomTopPositionPx() + '%', height: getRandomHeightPx()}} pose={isRightSide ? 'left' : 'right'} />;
     }
 }
 

@@ -27,13 +27,13 @@ const FlashBackground = posed.div({
     flash: {
         backgroundColor: isDay() ? '#000000' : '#ffffff',
         transition: { 
-            default: { ease: 'anticipate'}
+            default: { ease: 'anticipate', duration:50}
         }
     },
     noflash: {
         backgroundColor: isDay() ? '#ffffff' : '#000000',
         transition: { 
-            default: { ease: 'anticipate'}
+            default: { ease: 'anticipate', duration:50}
         }
     }
 });
@@ -44,6 +44,7 @@ function sleep (time:number) {
 
 function isDay() {
     const hours = (new Date()).getHours();
+    return true;
     return (hours >= 6 && hours < 18);
 }
 
@@ -58,7 +59,7 @@ class SpinnersBackground extends React.Component<Props>{
                 const weatherTypeID = this.props.weatherData.weather[0].ID;
                 if(weatherMapper.isLightningWeather(weatherTypeID)){
                     this.setState({ isFlashing: true });
-                    sleep(500).then(() => {
+                    sleep(50).then(() => {
                         this.setState({ isFlashing: false });
                     });
                 }
@@ -79,12 +80,13 @@ class SpinnersBackground extends React.Component<Props>{
     createSpinners = () => {
         const windSpeed = this.props.weatherData.wind.speed;
         const weatherTypeID = this.props.weatherData.weather[0].ID;
+        const weatherTemp = this.props.weatherData.main.temp;
         var animDurForWindSpeed = weatherMapper.getDurationForWindSpeed(windSpeed);
         var rotationForWindSpeed = weatherMapper.getRotationForWindSpeed(windSpeed);
         var isRaining = weatherMapper.isRaining(weatherTypeID);
         const spinners = [];
         for (let i = 0; i < this.props.spinnerCount; i++) {
-            spinners.push(<Spinner key={i} shouldFall={isRaining} animationDuration={animDurForWindSpeed} rotationAmount={rotationForWindSpeed}/>);
+            spinners.push(<Spinner key={i} shouldFall={isRaining} tempKelvin={weatherTemp} animationDuration={animDurForWindSpeed} rotationAmount={rotationForWindSpeed}/>);
         }
         return spinners;
     } 
