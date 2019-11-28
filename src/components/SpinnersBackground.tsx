@@ -31,10 +31,14 @@ class SpinnersBackground extends React.Component<Props>{
         }else if(typeof this.props.weatherData === 'undefined' || this.props.weatherData.length === 0){
             return <>Loading...</>
         }
-        var animDurForWindSpeed = weatherMapper.getDurationForWindSpeed(this.props.weatherData.wind.speed);
+        
+        const windSpeed = this.props.weatherData.wind.speed;
+        var animDurForWindSpeed = weatherMapper.getDurationForWindSpeed(windSpeed);
+        var rotationForWindSpeed = weatherMapper.getRotationForWindSpeed(windSpeed);
+
         const spinners = [];
         for (let i = 0; i < this.props.spinnerCount; i++) {
-            spinners.push(<Spinner key={i} animationDuration={animDurForWindSpeed} rotationAmount={720}/>);
+            spinners.push(<Spinner key={i} animationDuration={animDurForWindSpeed} rotationAmount={rotationForWindSpeed}/>);
         }
         return (
             spinners.map((value, index) => {
