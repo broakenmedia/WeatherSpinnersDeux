@@ -25,5 +25,10 @@ export default {
     isRaining(weatherID :number){
         /* IDs determined by OpenWeatherMap, 500 - 531 are different stages of rain. Not currently concered with intensity */
         return (weatherID >= 500 && weatherID <= 531) ? true : false;
+    },
+
+    getTemperatureCelcius(tempKelvin :number){
+        /* Formula required to convert from Kelvin to Celcius */
+        return Math.floor(tempKelvin - 273.15);
     }
 }

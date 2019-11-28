@@ -1,0 +1,42 @@
+{
+    "coord":{
+       "lon":-1.26,
+       "lat":51.75
+    },
+    "weather":[
+       {
+          "id":803,
+          "main":"Clouds",
+          "description":"broken clouds",
+          "icon":"04d"
+       }
+    ],
+    "base":"stations",
+    "main":{
+       "temp":282.57,
+       "pressure":996,
+       "humidity":100,
+       "temp_min":281.48,
+       "temp_max":283.71
+    },
+    "visibility":9000,
+    "wind":{
+       "speed":3.6,
+       "deg":300
+    },
+    "clouds":{
+       "all":75
+    },
+    "dt":1574946986,
+    "sys":{
+       "type":1,
+       "id":1476,
+       "country":"GB",
+       "sunrise":1574927085,
+       "sunset":1574956883
+    },
+    "timezone":0,
+    "id":2640729,
+    "name":"Oxford",
+    "cod":200
+}
