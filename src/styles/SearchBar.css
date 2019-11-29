@@ -58,3 +58,11 @@ input::-webkit-input-placeholder {
     z-index: 2;
     opacity: 0.9;
 }
+
+@media (max-width: 576px) { 
+    .searchBoxContainer{
+        width:80%;
+    }
+    
+
+}
