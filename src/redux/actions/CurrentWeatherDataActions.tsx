@@ -21,10 +21,9 @@ function fetchWeatherDataError(error:string) {
 }
 
 function fetchWeatherData(param:string) {
-    console.log(param);
     return (dispatch: { (arg0: { type: string; }): void; (arg0: { type: string; weatherData: string; }): void; (arg0: { type: string; error: string; }): void; }) => {
         dispatch(fetchWeatherDataPending());
-        if(process.env.REACT_APP_USE_DUMMY_DATA === 'true'){
+        if(process.env.REACT_APP_USE_DUMMY_DATA === 'false'){
             console.log("Using dummy data");
             dispatch(fetchWeatherDataSuccess(JSON.parse(JSON.stringify(dummyWeather))));
             return dummyWeather; 

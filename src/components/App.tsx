@@ -5,6 +5,7 @@ import ValuesDisplay from './ValuesDisplay';
 import { Provider } from 'react-redux';
 import store from '../redux/Store';
 import SearchBar from './SearchBar';
+import _debounce from 'lodash.debounce';
 
 class App extends React.Component{
 
@@ -16,6 +17,17 @@ class App extends React.Component{
 
   onControlsHidden(){
     this.setState({controlsHidden:true});
+  }
+
+  /* Reset state on page resize to maintain responsiveness */
+  debounce = _debounce(() => window.location.reload(), 200)
+
+  componentDidMount() {
+    window.addEventListener('resize', this.debounce)
+  }
+  
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.debounce)
   }
 
   render() {

@@ -1,14 +1,14 @@
 import React from "react";
 import { connect } from 'react-redux';
-import {fetchWeatherDataSuccess, fetchWeatherDataError, fetchWeatherDataPending} from '../redux/reducers/weatherReducer';
 import weatherMapper from '../utils/weatherDataMapper';
 import '../styles/ValuesDisplay.css';
 import { bindActionCreators } from "redux";
 
 export interface OwnProps {
-    weatherData?: any,
-    pending?: boolean,
-    error?: string,
+    currentWeatherData?: any,
+    forecastData?: any,
+    currentWeatherPending?: boolean,
+    currentWeatherError?: string,
     searchParam?: string
 }
 
@@ -32,22 +32,27 @@ class ValuesDisplay extends React.Component<Props>{
 
     render() {
         const { isShowing } = this.state;
-        if(this.props.pending === true){
+        if(this.props.currentWeatherPending === true){
             return <></>;
-        }else if(this.props.error !== null){
+        }else if(this.props.currentWeatherError !== null){
             return <></>
-        }else if(typeof this.props.weatherData === 'undefined' || this.props.weatherData.length === 0){
+        }else if(typeof this.props.currentWeatherData === 'undefined' || this.props.currentWeatherData.length === 0){
             return <></>
         }
+
+        var weatherObject = (typeof this.props.forecastData !== 'undefined' ? this.props.forecastData : this.props.currentWeatherData);
+
+        /* console.log("DisplayValues:")
+        console.log(this.props.forecastData); */
         return (
             <>
             { isShowing ? 
                 <div className="valueDisplay" onClick={this.handleClick.bind(this)}>
                     <p className="valueDisplayHeader">{this.props.searchParam}</p>
-                    <p>Temperature: {weatherMapper.getTemperatureCelcius(this.props.weatherData.main.temp)}°C</p>
-                    <p>Wind Speed: {this.props.weatherData.wind.speed}m/s</p>
-                    <p>Lightning: {weatherMapper.isLightningWeather(this.props.weatherData.weather.ID) ? 'true' : 'false'}</p>
-                    <p>Raining: {weatherMapper.isRaining(this.props.weatherData.weather.ID) ? 'true' : 'false'}</p>
+                    <p>Temperature: {weatherMapper.getTemperatureCelcius(weatherObject.main.temp)}°C</p>
+                    <p>Wind Speed: {weatherObject.wind.speed}m/s</p>
+                    <p>Lightning: {weatherMapper.isLightningWeather(weatherObject.weather[0].id) ? 'true' : 'false'}</p>
+                    <p>Raining: {weatherMapper.isRaining(weatherObject.weather[0].id) ? 'true' : 'false'}</p>
                 </div>
             : <></>}
             </>
@@ -58,9 +63,10 @@ class ValuesDisplay extends React.Component<Props>{
 const mapStateToProps = function(state: any) {
     return {
         searchParam: state.searchReducer.searchQuery,
-        error: fetchWeatherDataError(state.weatherReducer),
-        weatherData: fetchWeatherDataSuccess(state.weatherReducer),
-        pending: fetchWeatherDataPending(state.weatherReducer)
+        currentWeatherError: state.weatherReducer.error,
+        currentWeatherData: state.weatherReducer.weatherData,
+        currentWeatherPending: state.weatherReducer.isPending,
+        forecastData: state.forecastWeatherReducer.forecastData
     }
 }
 

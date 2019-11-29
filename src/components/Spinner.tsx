@@ -47,15 +47,18 @@ function getRandomDelayMillis(){
 }
 
 class Spinner extends React.PureComponent<SpinnerProps>{
+
+    state = { isRightSide: false };
     
     animationDuration = featherNumber(this.props.animationDuration);
+    rotationAmount = featherNumber(this.props.rotationAmount);
     
     SpinnerShape = posed.div({
         left: { 
             x: '-100px',
             delay: getRandomDelayMillis(),
             y: (this.props.shouldFall ? '100vh' : 0),
-            rotate:this.props.rotationAmount, 
+            rotate: this.rotationAmount, 
             opacity:0,
             transition: { 
                 y: {duration: this.animationDuration, ease: [.49, .12, .67, .1]},
@@ -72,8 +75,7 @@ class Spinner extends React.PureComponent<SpinnerProps>{
             transition: { duration: 0 } 
         }
     });
-    
-    state = { isRightSide: false };
+
 
     onAnimationFinish() {
         /* Flip animation, reseting position back to 0 instantly and calling again for right->left */

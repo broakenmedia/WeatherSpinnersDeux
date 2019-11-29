@@ -1,8 +1,8 @@
 import { FETCH_WEATHER_DATA_PENDING, FETCH_WEATHER_DATA_SUCCESS, FETCH_WEATHER_DATA_ERROR } from "../types/weatherTypes";
 
 const initialState = {
-    pending: false,
-    weatherData: [],
+    isPending: false,
+    weatherData: undefined,
     error: null
 }
 
@@ -11,28 +11,24 @@ export function weatherReducer(state = initialState, action: { type: any; weathe
         case FETCH_WEATHER_DATA_PENDING: 
             return {
                 ...state,
-                pending: true,
+                isPending: true,
                 error:null
             }
         case FETCH_WEATHER_DATA_SUCCESS:
             return {
                 ...state,
-                pending: false,
+                isPending: false,
                 weatherData: action.weatherData,
                 error:null
             }
         case FETCH_WEATHER_DATA_ERROR:
             return {
                 ...state,
-                pending: false,
-                weatherData:[],
+                isPending: false,
+                weatherData:undefined,
                 error: action.error
             }
         default: 
             return state;
     }
 }
-
-export const fetchWeatherDataSuccess = (state: { weatherData: any; }) => state.weatherData;
-export const fetchWeatherDataPending = (state: { pending: any; }) => state.pending;
-export const fetchWeatherDataError = (state: { error: any; }) => state.error;

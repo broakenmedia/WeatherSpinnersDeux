@@ -1,8 +1,11 @@
 import { combineReducers } from 'redux'
-import {weatherReducer} from './weatherReducer'
-import {searchReducer} from './searchReducer'
+import {weatherReducer} from './CurrentWeatherDataReducer'
+import {forecastWeatherReducer} from './ForecastDataReducer'
+import {searchReducer, forecastSliderReducer} from './SearchControlsReducer'
 
 export default combineReducers({
     weatherReducer,
-    searchReducer
+    searchReducer,
+    forecastWeatherReducer,
+    forecastSliderReducer
 })
