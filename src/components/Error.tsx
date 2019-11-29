@@ -1,7 +1,8 @@
 import React from "react";
-import '../styles/Loader.css';
+import '../styles/Error.css';
 
 export interface OwnProps {
+    errorMsg: string
 }
 
 interface DispatchProps {
@@ -10,7 +11,7 @@ interface DispatchProps {
 type Props = DispatchProps & OwnProps;
 
 /* Not strictly necessary to be it's own component but allows for flexibility later. */
-class Loader extends React.Component<Props>{
+class Error extends React.Component<Props>{
     state = { isShowing: true };
     componentDidMount() {
        
@@ -19,10 +20,10 @@ class Loader extends React.Component<Props>{
         return (
             <>
             { 
-                <div className="loadingMessage">Loading...</div>
+                <div className="errorMessage">{this.props.errorMsg}</div>
             }
             </>
         );
     }
 }
-export default Loader;
+export default Error;

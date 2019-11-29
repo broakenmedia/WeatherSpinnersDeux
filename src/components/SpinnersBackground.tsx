@@ -8,6 +8,7 @@ import weatherMapper from '../utils/weatherDataMapper';
 import posed from 'react-pose';
 import '../styles/SpinnersBackground.css';
 import Loader from './Loader';
+import Error from './Error';
 
 export interface OwnProps {
     spinnerCount: number,
@@ -132,8 +133,8 @@ class SpinnersBackground extends React.Component<Props>{
         
         if(this.props.currentWeatherPending === true){
             return <Loader/>;
-        }else if(this.props.currentWeatherError !== null){
-            return <>{this.props.currentWeatherError}</>
+        }else if(this.props.currentWeatherError !== null && typeof this.props.currentWeatherError !== 'undefined'){
+            return <Error errorMsg={this.props.currentWeatherError}/>
         }else if(typeof this.props.currentWeatherData === 'undefined'){
             return <Loader/>;
         }

@@ -34,7 +34,7 @@ class ValuesDisplay extends React.Component<Props>{
         const { isShowing } = this.state;
         if(this.props.currentWeatherPending === true){
             return <></>;
-        }else if(this.props.currentWeatherError !== null){
+        }else if(this.props.currentWeatherError !== null && typeof this.props.currentWeatherError !== 'undefined'){
             return <></>
         }else if(typeof this.props.currentWeatherData === 'undefined' || this.props.currentWeatherData.length === 0){
             return <></>

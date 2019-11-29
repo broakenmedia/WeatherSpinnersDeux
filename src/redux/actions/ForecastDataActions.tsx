@@ -51,7 +51,7 @@ function getForecastDayForSlider(forecastData:any, sliderVal:any){
 export function fetchForecastWeatherDataAction(param:string, sliderVal:number) {
     return (dispatch: { (arg0: { type: string; }): void; (arg0: { type: string; forecastData: string; }): void; (arg0: { type: string; error: string; }): void; }) => {
         dispatch(fetchForecastWeatherDataPending());
-        if(process.env.REACT_APP_USE_DUMMY_DATA === 'false'){
+        if(process.env.REACT_APP_USE_DUMMY_DATA === 'true'){
             console.log("Using dummy data");
             var res = JSON.parse(JSON.stringify(dummyWeather));
             var forecastDay = getForecastDayForSlider(res, sliderVal);
